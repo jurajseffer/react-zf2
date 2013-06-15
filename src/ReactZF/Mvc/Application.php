@@ -58,32 +58,33 @@ class Application extends ZendApplication
      * @param \React\Http\Request  $request
      * @param \React\Http\Response $response
      */
-    public function processRequest($request, $response)
+    public function processRequest(\React\Http\Request $request, \React\Http\Response $response)
     {
-        $request->on(
-            'data', function ($dataBuffer) use($request, $response) {
-                $this->request = new Request();
-                $this->request->setContent($dataBuffer);
-                $this->request->setReactRequest($request);
+        // done this way to make it work with PHP 5.3
+        // PHP 5.4 allows calls to $this within anonymous functions
+        $self = $this;
+        $request->on('data', function ($dataBuffer) use ($self) {
+            $self->getServiceManager()->get("Request")->setContent($dataBuffer);
+            $self->run();
+        });
 
-                $this->response = new Response();
-                $this->response->setReactResponse($response);
+        $this->request = new Request();
+        $this->request->setReactRequest($request);
 
-                $allow = $this->getServiceManager()->getAllowOverride();
+        $this->response = new Response();
+        $this->response->setReactResponse($response);
 
-                $this->getServiceManager()->setAllowOverride(true);
-                $this->getServiceManager()->setService('Request', $this->request);
-                $this->getServiceManager()->setService('Response', $this->response);
-                $this->getServiceManager()->setAllowOverride($allow);
+        $allow = $this->getServiceManager()->getAllowOverride();
 
-                $event = $this->getMvcEvent();
-                $event->setError(null);
-                $event->setRequest($this->getRequest());
-                $event->setResponse($this->getResponse());
+        $this->getServiceManager()->setAllowOverride(true);
+        $this->getServiceManager()->setService('Request', $this->request);
+        $this->getServiceManager()->setService('Response', $this->response);
+        $this->getServiceManager()->setAllowOverride($allow);
 
-                $this->run();
-            }
-        );
+        $event = $this->getMvcEvent();
+        $event->setError(null);
+        $event->setRequest($this->getRequest());
+        $event->setResponse($this->getResponse());
     }
 
     /**
@@ -116,5 +117,4 @@ class Application extends ZendApplication
     {
         return $this->serverOptions;
     }
-
 }
