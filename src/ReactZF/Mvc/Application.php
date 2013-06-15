@@ -47,9 +47,9 @@ class Application extends ZendApplication
         $socket = new SocketServer($loop);
         $http = new HttpServer($socket);
 
-        $this->getEventManager()->attach(MvcEvent::EVENT_FINISH, [$this, 'renderRequest'], -1000);
+        $this->getEventManager()->attach(MvcEvent::EVENT_FINISH, array($this, 'renderRequest'), -1000);
 
-        $http->on('request', [$this, 'processRequest']);
+        $http->on('request', array($this, 'processRequest'));
         $socket->listen($this->serverOptions->getPort(), $this->serverOptions->getHost());
         $loop->run();
     }

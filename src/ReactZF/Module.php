@@ -67,7 +67,7 @@ class Module implements
             'factories' => array(
                 'ReactZFApplicationManagerOptions' => function (ServiceManager $sm) {
                     $configuration = $sm->get('Configuration');
-                    $options = isset($configuration['ReactZF']) ? $configuration['ReactZF'] : [];
+                    $options = isset($configuration['ReactZF']) ? $configuration['ReactZF'] : arrray();
 
                     return new ApplicationManagerOptions($options);
                 },

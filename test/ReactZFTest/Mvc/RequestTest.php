@@ -25,7 +25,7 @@ class RequestTest extends \PHPUnit_Framework_TestCase
 
     public function testSetReactRequest()
     {
-        $request = new ReactRequest('POST', '/test/', ['a' => 1], '1.1', ['User-Agent' => 'phpunit']);
+        $request = new ReactRequest('POST', '/test/', array('a' => 1), '1.1', array('User-Agent' => 'phpunit'));
         $this->object->setReactRequest($request);
 
         $this->assertTrue($this->object->isPost());
@@ -37,7 +37,7 @@ class RequestTest extends \PHPUnit_Framework_TestCase
 
     public function testGetReactRequest()
     {
-        $request = new ReactRequest('POST', '/test/', ['a' => 1], '1.1', ['User-Agent' => 'phpunit']);
+        $request = new ReactRequest('POST', '/test/', array('a' => 1), '1.1', array('User-Agent' => 'phpunit'));
         $this->object->setReactRequest($request);
         $this->assertInstanceOf('React\Http\Request', $this->object->getReactRequest());
     }

@@ -73,7 +73,7 @@ class ApplicationManager
     public function runAll(Request $request)
     {
         foreach ($this->options->getServers() as $name => $server) {
-            $command = [];
+            $command = array();
 
             $command[] = 'php';
             $command[] = '-f';

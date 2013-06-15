@@ -28,13 +28,13 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
         $this->object->getHeaders()->addHeaderLine('Content-Type', 'plain/text');
 
         $response = $this->getMockBuilder('React\Http\Response')
-            ->setMethods(['writeHead'])
+            ->setMethods(array('writeHead'))
             ->disableOriginalConstructor()
             ->getMock();
 
         $response->expects($this->once())
             ->method('writeHead')
-            ->with($this->equalTo(400), $this->equalTo(['Content-Type' => 'plain/text']));
+            ->with($this->equalTo(400), $this->equalTo(array('Content-Type' => 'plain/text')));
 
         $this->object->setReactResponse($response);
         $this->object->sendHeaders();
@@ -45,7 +45,7 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
         $this->object->setContent('body');
 
         $response = $this->getMockBuilder('React\Http\Response')
-            ->setMethods(['end'])
+            ->setMethods(array('end'))
             ->disableOriginalConstructor()
             ->getMock();
 
